@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ගස්ලබු ඇට ගණන් කිරීමේ තරඟය</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson: #8B1A2D;
+      --crimson-dark: #6B1222;
+      --gold: #C9973A;
+      --gold-light: #E8B84B;
+      --cream: #FAF5EB;
+      --cream-dark: #F2EAD8;
+      --text: #2C1810;
+      --text-muted: #6B4C3B;
+      --white: #FFFFFF;
+      --shadow: 0 4px 20px rgba(139, 26, 45, 0.15);
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+    .header {
+      background: var(--crimson);
+      padding: 32px 20px 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before, .header::after {
+      content: '+'; position: absolute; color: rgba(255,255,255,0.08);
+      font-size: 60px; font-weight: 300; line-height: 1;
+    }
+    .header::before { top: 10px; left: 30px; }
+    .header::after  { bottom: 10px; right: 30px; }
+
+    .header-logo {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 3px solid var(--gold);
+      margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+      overflow: hidden; box-shadow: 0 0 0 6px rgba(201,151,58,0.2);
+    }
+    .header-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .header-logo .logo-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; height: 100%; color: var(--gold); font-size: 10px;
+      text-align: center; font-weight: 600; gap: 2px;
+    }
+    .header-logo .logo-placeholder span.icon { font-size: 28px; line-height: 1; }
+
+    .header-title-en {
+      font-size: clamp(18px, 5vw, 26px); font-weight: 700;
+      color: var(--white); letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    .header-subtitle {
+      font-family: 'Noto Sans Sinhala', sans-serif;
+      font-size: clamp(11px, 3vw, 14px); color: var(--gold-light);
+    }
+
+    .contest-title-band {
+      background: var(--cream-dark); border-bottom: 3px solid var(--gold);
+      padding: 20px 16px; text-align: center;
+    }
+    .contest-title-si {
+      font-family: 'Noto Sans Sinhala', sans-serif;
+      font-size: clamp(14px, 4vw, 20px); font-weight: 700; color: var(--crimson); line-height: 1.5;
+    }
+    .contest-title-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+
+    .main { max-width: 800px; margin: 0 auto; padding: 28px 16px 60px; }
+
+    .card {
+      background: var(--white); border-radius: 16px; box-shadow: var(--shadow);
+      padding: 28px 24px; margin-bottom: 28px;
+    }
+    .card-title {
+      font-size: 16px; font-weight: 700; color: var(--crimson);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+    }
+    .card-title::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, var(--gold), transparent); }
+    .card-title .icon { font-size: 20px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    label { font-size: 13px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.3px; }
+    label .si { font-family: 'Noto Sans Sinhala', sans-serif; color: var(--text); display: block; font-size: 12px; margin-top: 2px; }
+
+    input {
+      width: 100%; padding: 12px 14px; border: 2px solid #E8DDD0; border-radius: 10px;
+      font-size: 15px; font-family: 'Inter', sans-serif; color: var(--text);
+      background: var(--cream); transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+    }
+    input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,151,58,0.15); background: var(--white); }
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    .btn-submit {
+      width: 100%; padding: 14px; background: var(--crimson); color: var(--white);
+      border: none; border-radius: 12px; font-size: 16px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      margin-top: 6px; display: flex; align-items: center; justify-content: center;
+      gap: 8px; box-shadow: 0 4px 12px rgba(139,26,45,0.3);
+    }
+    .btn-submit:hover:not(:disabled) { background: var(--crimson-dark); box-shadow: 0 6px 20px rgba(139,26,45,0.4); }
+    .btn-submit:active:not(:disabled) { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-submit .si { font-family: 'Noto Sans Sinhala', sans-serif; font-size: 14px; }
+
+    .alert {
+      display: none; padding: 12px 16px; border-radius: 10px; font-size: 14px;
+      font-weight: 500; margin-top: 16px; align-items: center; gap: 10px;
+    }
+    .alert.show { display: flex; }
+    .alert-icon { font-size: 18px; flex-shrink: 0; }
+    .alert-success { background: #ECFDF5; color: #065F46; border: 1.5px solid #A7F3D0; }
+    .alert-error   { background: #FEF2F2; color: #991B1B; border: 1.5px solid #FECACA; }
+    .alert-info    { background: #EFF6FF; color: #1E40AF; border: 1.5px solid #BFDBFE; }
+
+    .leaderboard-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .refresh-btn {
+      background: none; border: 2px solid var(--gold); color: var(--gold);
+      border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    }
+    .refresh-btn:hover { background: var(--gold); color: var(--white); }
+    .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .leaderboard-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .leaderboard-table thead th {
+      background: var(--crimson); color: var(--white); padding: 12px 14px;
+      text-align: left; font-weight: 600; font-size: 13px;
+    }
+    .leaderboard-table thead th:first-child { border-radius: 10px 0 0 0; }
+    .leaderboard-table thead th:last-child  { border-radius: 0 10px 0 0; text-align: right; }
+    .leaderboard-table tbody tr { border-bottom: 1px solid #F0E8DE; transition: background 0.15s; }
+    .leaderboard-table tbody tr:hover { background: var(--cream); }
+    .leaderboard-table tbody td { padding: 13px 14px; vertical-align: middle; }
+    .leaderboard-table tbody td:last-child { text-align: right; }
+
+    .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; font-weight: 700; font-size: 13px; }
+    .rank-1 { background: #FEF9C3; color: #854D0E; border: 2px solid #EAB308; }
+    .rank-2 { background: #F1F5F9; color: #334155; border: 2px solid #94A3B8; }
+    .rank-3 { background: #FEF3E2; color: #92400E; border: 2px solid #CD7C2A; }
+    .rank-other { background: var(--cream); color: var(--text-muted); border: 2px solid #E8DDD0; }
+    .name-cell { font-weight: 600; color: var(--text); }
+    .seeds-cell { font-weight: 700; color: var(--crimson); font-size: 16px; }
+    .top-3-row td { background: rgba(201,151,58,0.04); }
+
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 15px; }
+    .empty-state .emoji { font-size: 40px; margin-bottom: 12px; }
+    .loading-shimmer { padding: 20px; text-align: center; color: var(--text-muted); font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .spinner { width: 18px; height: 18px; border: 2px solid #E8DDD0; border-top-color: var(--crimson); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; border-top: 1px solid #E8DDD0; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-logo">
+      <!--
+        LOGO PLACEHOLDER
+        Replace this div with your base64 logo image:
+        <img src="data:image/png;base64,YOUR_BASE64_HERE" alt="Event Logo" />
+      -->
+      <div class="logo-placeholder">
+        <span class="icon">🌺</span>
+        <span>LOGO</span>
+      </div>
+    </div>
+    <div class="header-title-en">Albury Wodonga අලුත් අවුරුදු 2026</div>
+    <div class="header-subtitle">#4වෙනිදාහමබෙමු</div>
+  </header>
+
+  <div class="contest-title-band">
+    <div class="contest-title-si">අවුරුදු පැපොල් ඇට ගණන් කිරීමේ තරඟය</div>
+    <div class="contest-title-sub">Papaw Seed Counting Competition</div>
+  </div>
+
+  <main class="main">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">✏️</span>Submit Your Guess</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>First Name<span class="si">මුල් නම</span></label>
+          <input type="text" id="firstName" placeholder="e.g. Kasun" autocomplete="given-name" />
+        </div>
+        <div class="form-group">
+          <label>Last Name<span class="si">අවසාන නම</span></label>
+          <input type="text" id="lastName" placeholder="e.g. Perera" autocomplete="family-name" />
+        </div>
+        <div class="form-group full">
+          <label>Seed Count Guess<span class="si">ඇට ගණන (ඔබේ අනුමානය)</span></label>
+          <input type="number" id="seedCount" placeholder="e.g. 342" min="1" max="9999" />
+        </div>
+      </div>
+      <button class="btn-submit" id="submitBtn" onclick="submitEntry()">
+        Submit Guess &nbsp;<span class="si">/ තරඟයට ඇතුල් වන්න</span>
+      </button>
+      <div class="alert alert-success" id="alertSuccess"><span class="alert-icon">✅</span><span id="alertSuccessMsg"></span></div>
+      <div class="alert alert-error"   id="alertError">  <span class="alert-icon">❌</span><span id="alertErrorMsg"></span></div>
+      <div class="alert alert-info"    id="alertInfo">   <span class="alert-icon">ℹ️</span><span id="alertInfoMsg"></span></div>
+    </div>
+
+    <div class="card">
+      <div class="leaderboard-header-row">
+        <div class="card-title" style="margin-bottom:0;flex:1;"><span class="icon">🏆</span>Leaderboard</div>
+        <button class="refresh-btn" id="refreshBtn" onclick="loadLeaderboard()">🔄 Refresh</button>
+      </div>
+      <div id="leaderboardContainer">
+        <div class="loading-shimmer"><div class="spinner"></div>Loading entries...</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer><p>Albury Wodonga Sri Lankan Community &mdash; අලුත් අවුරුදු 2026</p></footer>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbySdRJbRtyQ-oDLwGtleClaDPlq_cT87i1JySBeSYkH8qWGSchfcS7KECCbQIDCax3EyA/exec';
+
+    function showAlert(type, msg) {
+      ['Success','Error','Info'].forEach(t => document.getElementById('alert'+t).classList.remove('show'));
+      if (type) {
+        document.getElementById('alert'+type+'Msg').textContent = msg;
+        document.getElementById('alert'+type).classList.add('show');
+      }
+    }
+
+    function setLoading(loading) {
+      const btn = document.getElementById('submitBtn');
+      document.getElementById('refreshBtn').disabled = loading;
+      btn.disabled = loading;
+      btn.innerHTML = loading
+        ? '<div class="spinner" style="border-color:#fff3;border-top-color:#fff;width:18px;height:18px;"></div> Submitting...'
+        : 'Submit Guess &nbsp;<span class="si">/ තරඟයට ඇතුල් වන්න</span>';
+    }
+
+    async function submitEntry() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const seedCount = document.getElementById('seedCount').value.trim();
+      showAlert(null);
+      if (!firstName || !lastName || !seedCount) {
+        showAlert('Info', 'Please fill in all fields. / සියලු තොරතුරු පිරවීමෙන් ඉදිරිපත් කරන්න.');
+        return;
+      }
+      const guess = parseInt(seedCount, 10);
+      if (isNaN(guess) || guess < 1) { showAlert('Error', 'Please enter a valid seed count.'); return; }
+      setLoading(true);
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'submit', firstName, lastName, guess })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          showAlert('Success', `Your guess of ${guess} seeds has been recorded! / ඔබේ අනුමාන ඇට ගණන ${guess} ලියාපදිංචි කළා!`);
+          document.getElementById('firstName').value = '';
+          document.getElementById('lastName').value  = '';
+          document.getElementById('seedCount').value = '';
+          loadLeaderboard();
+        } else if (data.status === 'duplicate') {
+          showAlert('Error', 'You have already submitted an entry! / ඔබ දැනටමත් ඇතුළත් වී ඇත!');
+        } else {
+          showAlert('Error', data.message || 'Submission failed. Please try again.');
+        }
+      } catch (err) {
+        showAlert('Error', 'Network error. Please check your connection and try again.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function loadLeaderboard() {
+      const container  = document.getElementById('leaderboardContainer');
+      const refreshBtn = document.getElementById('refreshBtn');
+      refreshBtn.disabled = true;
+      container.innerHTML = '<div class="loading-shimmer"><div class="spinner"></div>Loading entries...</div>';
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL + '?action=entries&t=' + Date.now());
+        const data = await res.json();
+        if (!data.entries || data.entries.length === 0) {
+          container.innerHTML = `<div class="empty-state"><div class="emoji">🌱</div><div>No entries yet. Be the first to submit!</div><div style="font-family:'Noto Sans Sinhala',sans-serif;font-size:13px;margin-top:6px;">තවම ඇතුළු කිරීම් නැත. ප්‍රථමයා වන්න!</div></div>`;
+          return;
+        }
+        const seen = new Map();
+        for (const e of data.entries) {
+          const key = (e.firstName+'|'+e.lastName).toLowerCase();
+          if (!seen.has(key) || parseInt(e.guess) > parseInt(seen.get(key).guess)) seen.set(key, e);
+        }
+        const sorted = [...seen.values()].sort((a,b) => parseInt(b.guess)-parseInt(a.guess));
+        let rows = '';
+        sorted.forEach((entry, i) => {
+          const rank = i+1;
+          const rc = rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-other';
+          rows += `<tr class="${rank<=3?'top-3-row':''}">
+            <td><span class="rank-badge ${rc}">${rank}</span></td>
+            <td class="name-cell">${esc(entry.firstName)} ${esc(entry.lastName)}</td>
+            <td class="seeds-cell">${parseInt(entry.guess).toLocaleString()}</td>
+          </tr>`;
+        });
+        container.innerHTML = `<table class="leaderboard-table">
+          <thead><tr><th style="width:50px;">Rank</th><th>Name / නම</th><th>Seeds / ඇට ගණන</th></tr></thead>
+          <tbody>${rows}</tbody></table>`;
+      } catch (err) {
+        container.innerHTML = `<div class="empty-state"><div class="emoji">⚠️</div><div>Could not load leaderboard. Please refresh.</div></div>`;
+      } finally {
+        refreshBtn.disabled = false;
+      }
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    document.addEventListener('keydown', e => { if (e.key==='Enter') submitEntry(); });
+    loadLeaderboard();
+  </script>
+</body>
+</html>
